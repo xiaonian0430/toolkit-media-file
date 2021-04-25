@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  music_worker_server:
+    image: xiaonian/python:3.8.5
+    restart: always
+    container_name: music_worker_container
+    command:
+      - /bin/bash 
+      - -c
+      - |
+        virtualenv3 venv
+        source venv/bin/activate
+        pip3 install -r requirements.txt
+        python3 main.py
+    volumes:
+      - ./:/usr/src/myapp:rw

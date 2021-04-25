@@ -1,0 +1,28 @@
+ffmpeg一个视频音频处理的工具，很是强大。由于最近做一个视频网站让我不得不接触了下这个工具。简单记录下我使用到的地方。
+
+二、将其他格式转换为mp4
+html5可直接播放的mp4格式要求视频编码为h.264，音频编码为aac，在转换前可以查看下原视频的编码格式。
+
+ffmpeg -i 111.flv -c:v copy -c:a copy out/oo.mp4
+
+-i _file -i后面跟带转换的文件位置
+-c:v 等于 -vcodec。目标视频编码格式 copy 表示使用以前的格式，转换为h.264则libx264
+-c:a 等于 -acodec。目标音频格式，转换为aac则libfaac 后 aac
+-s hd720 目标视频的分辨率
+-crf 23 设置质量等级，越高越差，也越费时间
+
+
+三、将视频转ts切片并生成m3u8播放列表
+
+1、分两步转换，效率高
+先将mp4格式的转换为ts格式，命令如下：
+ffmpeg -i out/oo.mp4 -c copy -bsf:v h264_mp4toannexb out/oo.ts
+再将完整的ts文件进行切片处理，命令如下：
+
+ffmpeg -i .\pp.ts -c copy -map 0 -f segment -segment_time 8 -segment_list pp.m3u8 pp_%03d.ts
+
+说明：
+%03d有没有很像c语言中的格式化，表示三位整数
+-segment_time 每个切片的视频时长，单位s
+-segment_list m3u8文件输出位置
+-f 大概就是格式化方式吧
