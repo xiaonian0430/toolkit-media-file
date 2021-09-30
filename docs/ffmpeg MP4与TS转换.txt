@@ -1,0 +1,10 @@
+Mp4 To TS
+
+ffmpeg -i "test.mp4" -i "test.aac" -f mpegts  -vcodec copy -acodec copy -vbsf h264_mp4toannexb -y test.ts
+
+TS To Mp4
+ffmpeg -i input.ts -vcodec  copy -acodec libfaac out.mp4
+
+or
+
+ffmpeg -i input.ts -vcodec libx264 -crf 24 -acodec  libfaac out.mp4

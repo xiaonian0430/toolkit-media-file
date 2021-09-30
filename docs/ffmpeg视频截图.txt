@@ -1,0 +1,1 @@
+ffmpeg -i input.mp4 -y -f image2 -ss 1.0 -t 0.001  -s 1920x1080 test.jpg
